@@ -10,27 +10,29 @@ model = keras.models.load_model("weather_model.h5")
 st.title("Image Classification for Weather")
 st.write("Upload an image of a weather condition to classify it.")
 st.write("The model can classify images into the following categories: cloudy, rain, shine, sunrise.")
+st.warning("When uploading image, make sure to wait for at least 3 seconds before clicking 'Classify'".)
 
 # File upload
-uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "jpeg", "png"])
+if uploaded_file is not None:
+    st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
 
-if st.button("Classify"):
-    if uploaded_file is not None:
-        # Display image
-        st.image(uploaded_file, caption="Uploaded Image")
+    if st.button("Classify"):
         st.write("Classifying...")
 
-        # Preprocess the image
-        img = load_img(uploaded_file, target_size=(224, 224))  # fix target_size
-        img_array = img_to_array(img)
-        img_array = np.expand_dims(img_array, axis=0)  # batch dimension
+        try:
+            # Preprocess the image
+            img = load_img(uploaded_file, target_size=(224, 224))
+            img_array = img_to_array(img)
+            img_array = np.expand_dims(img_array, axis=0)
 
-        # Predict
-        predictions = model.predict(img_array)
-        score = keras.activations.softmax(predictions[0]).numpy()
+            # Predict
+            predictions = model.predict(img_array)
+            score = keras.activations.softmax(predictions[0]).numpy()
 
-        # Class names (match your notebook!)
-        classes = ['cloudy', 'rain', 'shine', 'sunrise']
-        st.write(f"Prediction: **{classes[np.argmax(score)]}**")
-    else:
-        st.warning("Please upload an image.")
+            classes = ['cloudy', 'rain', 'shine', 'sunrise']
+            st.write(f"Prediction: **{classes[np.argmax(score)]}**")
+        except Exception as e:
+            st.error(f"Something went wrong during classification: {e}")
+else:
+    st.warning("Please upload an image.")
+
