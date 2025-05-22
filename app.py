@@ -12,6 +12,8 @@ st.write("Upload an image of a weather condition to classify it.")
 st.write("The model can classify images into the following categories: cloudy, rain, shine, sunrise.")
 st.warning("When uploading image, make sure to wait for at least 3 seconds before clicking 'Classify'")
 
+uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "jpeg", "png"])
+
 # File upload
 if uploaded_file is not None:
     st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
