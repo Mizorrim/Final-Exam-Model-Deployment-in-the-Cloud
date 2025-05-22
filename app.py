@@ -10,7 +10,7 @@ model = keras.models.load_model("weather_model.h5")
 st.title("Image Classification for Weather")
 st.write("Upload an image of a weather condition to classify it.")
 st.write("The model can classify images into the following categories: cloudy, rain, shine, sunrise.")
-st.warning("When uploading image, make sure to wait for at least 3 seconds before clicking 'Classify'".)
+st.warning("When uploading image, make sure to wait for at least 3 seconds before clicking 'Classify'")
 
 # File upload
 if uploaded_file is not None:
